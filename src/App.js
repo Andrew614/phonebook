@@ -26,6 +26,16 @@ const App = () => {
     setFilteredName(event.target.value)
   }
 
+  const handleDelete = (id) => {
+    const personToDelete = people.find(p => p.id === id)
+    const result = window.confirm(`Delete ${personToDelete.name}?`)
+    if (result) {
+      contactService.destroy(id).then(() => {
+        setPeople(people.filter(p => p.id !== id))
+      })
+    }
+  }
+
   const addContact = (event) => {
     event.preventDefault()
     const person = {
@@ -33,14 +43,20 @@ const App = () => {
       number: newNumber
     }
     if (people.includes(people.find(p => p.name === person.name))) {
-      alert(`${person.name} is already added to phonebook`)
+      const result = window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)
+      if (result) {
+        const personToUpdate = people.find(p => p.name === person.name)
+        contactService.update(personToUpdate.id, person).then(updatedContact => {
+          setPeople(people.map(p => p.id === personToUpdate.id ? updatedContact : p))
+        })
+      }
     } else {
-      contactService.create(person).then(returnedContact => {
-        setPeople([...people, returnedContact])
-        setNewName('')
-        setNewNumber('')
+      contactService.create(person).then(newContact => {
+        setPeople([...people, newContact])
       })
     }
+    setNewName('')
+    setNewNumber('')
   }
 
   return (
@@ -56,7 +72,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        <People people={people} filteredName={filteredName} />
+        <People people={people} filteredName={filteredName} handleDelete={handleDelete} />
       </div>
     </div >
   )

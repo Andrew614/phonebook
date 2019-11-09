@@ -22,13 +22,23 @@
     },
     {
       "name": "Bibi Jones",
-      "number": "123-441-9210",
+      "number": "123-456-7890",
       "id": 5
     },
     {
       "name": "Alexander Hamilton",
-      "number": "54-151-6112",
+      "number": "54-156-9480",
       "id": 6
+    },
+    {
+      "name": "John Smith",
+      "number": "98-123-5678",
+      "id": 7
+    },
+    {
+      "name": "Jane Doe",
+      "number": "15-555-1234",
+      "id": 8
     }
   ]
 }
